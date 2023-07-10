@@ -2,7 +2,7 @@
 This module contains the StackerBoard dataclass
 """
 from typing import Mapping, Optional
-import string
+from enigma_cypher.components.characters import ALL_CHARACTERS
 
 
 class StackerBoardError(ValueError):
@@ -19,10 +19,10 @@ class StackerBoard:
     any other letter.
 
     In difference to the original 'stackerbett' from the Enigma Machine, this one
-    allows mapping also numbers
+    allows mapping also numbers.
     """
 
-    VALID_CHARACTERS = list(string.ascii_lowercase + string.digits)
+    VALID_CHARACTERS = list(ALL_CHARACTERS)
 
     def __init__(self, keys_map: Optional[Mapping[str, str]] = None):
         """
