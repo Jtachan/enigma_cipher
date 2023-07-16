@@ -1,7 +1,7 @@
 """
 This module contains the Rotor class
 """
-from enigma_cypher.components.characters import ALL_CHARACTERS
+import string
 
 
 class Rotor:
@@ -21,7 +21,8 @@ class Rotor:
     Position 26: 'A' = '0'
     Position 27: 'A' = '1'
     """
-    MAX_POSITIONS = len(ALL_CHARACTERS)
+
+    MAX_POSITIONS = len(string.ascii_lowercase)
 
     def __init__(self, position: int = 0):
         """
@@ -62,7 +63,6 @@ class Rotor:
         str:
             Encoded character as a new letter or digit.
         """
-        character_idx = ALL_CHARACTERS.index(character)
+        character_idx = string.ascii_lowercase.index(character)
         encoded_char_idx = (character_idx + self.__current_pos) % self.MAX_POSITIONS
-        return ALL_CHARACTERS[encoded_char_idx]
-
+        return string.ascii_lowercase[encoded_char_idx]

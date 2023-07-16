@@ -1,8 +1,8 @@
 """
 This module contains the StackerBoard dataclass
 """
+import string
 from typing import Mapping, Optional
-from enigma_cypher.components.characters import ALL_CHARACTERS
 
 
 class StackerBoardError(ValueError):
@@ -22,7 +22,7 @@ class StackerBoard:
     allows mapping also numbers.
     """
 
-    VALID_CHARACTERS = list(ALL_CHARACTERS)
+    VALID_CHARACTERS = list(string.ascii_lowercase)
 
     def __init__(self, keys_map: Optional[Mapping[str, str]] = None):
         """
@@ -44,12 +44,9 @@ class StackerBoard:
             non-ascii value.
         """
         if keys_map is not None and len(keys_map) > 0:
-            final_mapping = {
-                key: "" for key in self.VALID_CHARACTERS
-            }
+            final_mapping = {key: "" for key in self.VALID_CHARACTERS}
             for key in self.VALID_CHARACTERS:
-                value = keys_map.get(key, keys_map.get(key.upper()))
-                if value is None:
+                if value := keys_map.get(key, keys_map.get(key.upper())) is None:
                     continue
                 value = str(value)
                 if len(value) not in self.VALID_CHARACTERS:
@@ -67,9 +64,7 @@ class StackerBoard:
             self.__keys_map = final_mapping
 
         else:
-            self.__keys_map = {
-                key: key for key in self.VALID_CHARACTERS
-            }
+            self.__keys_map = {key: key for key in self.VALID_CHARACTERS}
 
     @property
     def keys_map(self) -> Mapping[str, str]:
