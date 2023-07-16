@@ -1,8 +1,10 @@
 """
 This module contains the PlugBoard dataclass
 """
+from __future__ import annotations
 import string
 from typing import Mapping, Optional
+import random
 
 
 class StackerBoardError(ValueError):
@@ -74,6 +76,19 @@ class PlugBoard:
                 final_mapping[key] = key
 
             self.__keys_map = final_mapping
+
+    @classmethod
+    def random_map(cls) -> PlugBoard:
+        """
+        Initializes the PlugBoard class with a random mapping. The mapping might
+        contain all letters connected or only a few.
+        """
+        keys_map = {}
+        shuffled_keys = iter(random.sample(cls.VALID_CHARACTERS, 26))
+        for key, _ in zip(shuffled_keys, range(random.randint(0, 13))):
+            keys_map[key] = next(shuffled_keys)
+
+        return cls(keys_map=keys_map)
 
     def encode_character(self, character: str) -> str:
         """
