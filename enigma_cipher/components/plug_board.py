@@ -1,5 +1,5 @@
 """
-This module contains the StackerBoard dataclass
+This module contains the PlugBoard dataclass
 """
 import string
 from typing import Mapping, Optional
@@ -7,18 +7,18 @@ from typing import Mapping, Optional
 
 class StackerBoardError(ValueError):
     """
-    Error to be raised if there is any conflict within the StackerBoard class
+    Error to be raised if there is any conflict within the PlugBoard class
     """
 
 
-class StackerBoard:
+class PlugBoard:
     """
-    The StackerBoard provides the mapping of each letter to another one. Each letter
+    The PlugBoard provides the mapping of each letter to another one. Each letter
     can be mapped to another letter only once. Also, mapping the letter 'A' with the
     letter 'T' will block this combination, not allowing mapping the letter 'T' with
     any other letter.
 
-    In difference to the original 'stackerbett' from the Enigma Machine, this one
+    In difference to the original 'Steckerbrett' from the Enigma Machine, this one
     allows mapping also numbers.
     """
 

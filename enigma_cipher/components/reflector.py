@@ -13,7 +13,7 @@ class ReflectorError(ValueError):
 class Reflector:
     """
     The reflector connects, in pairs, all the positions of the letters. This allows
-    that an encoded text could be decoded with a machine having the same StackerBoard
+    that an encoded text could be decoded with a machine having the same PlugBoard
     and Rotors configuration.
     """
 

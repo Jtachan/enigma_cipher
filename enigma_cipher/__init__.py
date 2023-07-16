@@ -9,6 +9,6 @@ LinkedIn: https://www.linkedin.com/in/jaime-gonzalezg/
 """
 from enigma_cipher.components.reflector import Reflector
 from enigma_cipher.components.rotor import Rotor
-from enigma_cipher.components.stacker_board import StackerBoard
+from enigma_cipher.components.plug_board import PlugBoard
 
-__all__ = ["Reflector", "Rotor", "StackerBoard"]
+__all__ = ["Reflector", "Rotor", "PlugBoard"]
