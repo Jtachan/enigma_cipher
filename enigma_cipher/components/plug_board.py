@@ -31,12 +31,12 @@ class PlugBoard:
         Parameters
         ----------
         keys_map: Mapping, optional
-            Mapping for every single letter.
+            Mapping for every single letter. If not given, no mapping is defined,
+            meaning letter 'A' is mapped to 'A' and so on.
             It is not necessary to specify both directions as {"A": "B", "B": "A"};
             the specification of {"A": "B", ...} is enough for the class to understand
             the connection is bidirectional.
-            If not given, no mapping is defined, meaning letter 'A' is mapped to 'A'
-            and so on.
+            It is not needed to give all characters, only those that are mapped.
 
         Raises
         ------
@@ -44,27 +44,42 @@ class PlugBoard:
             If a letter is being mapped to different values or to a non-character and
             non-ascii value.
         """
-        if keys_map is not None and len(keys_map) > 0:
+        if keys_map is None:
+            self.__keys_map = {key: key for key in self.VALID_CHARACTERS}
+        else:
             final_mapping = {key: "" for key in self.VALID_CHARACTERS}
-            for key in self.VALID_CHARACTERS:
-                if value := keys_map.get(key, keys_map.get(key.upper())) is None:
-                    continue
-                if value := value.upper() not in self.VALID_CHARACTERS:
+            unused_keys = self.VALID_CHARACTERS
+
+            for key, value in keys_map.items():
+                key, value = key.upper(), value.upper()
+                if (
+                    key not in self.VALID_CHARACTERS
+                    or value not in self.VALID_CHARACTERS
+                ):
                     raise StackerBoardError(
-                        f"Invalid map '{key} -> {value}' specified."
+                        f"Invalid mapping given. Only characters "
+                        f"'{self.VALID_CHARACTERS}' are allowed"
                     )
-                if final_mapping[value] not in ("", key):
+                if key in final_mapping and final_mapping[key] not in ("", value):
                     raise StackerBoardError(
-                        f"Key '{value}' mapped to '{key}' and '{final_mapping[value]}'."
+                        f"Key '{key}' mapped to '{value}' and '{final_mapping[key]}'."
                     )
 
-                final_mapping[key] = value
-                final_mapping[value] = key
+                final_mapping[key], final_mapping[value] = value, key
+                unused_keys.remove(key)
+                if key != value:
+                    unused_keys.remove(value)
+
+            for key in unused_keys:
+                final_mapping[key] = key
 
             self.__keys_map = final_mapping
 
-        else:
-            self.__keys_map = {key: key for key in self.VALID_CHARACTERS}
+    def encode_character(self, character: str) -> str:
+        """
+        Returns the mapped character on the plugboard
+        """
+        return self.__keys_map[character]
 
     @property
     def keys_map(self) -> Mapping[str, str]:
