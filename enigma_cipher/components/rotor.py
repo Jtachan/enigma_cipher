@@ -17,9 +17,6 @@ class Rotor:
     Position 1: 'A' = 'B'
     ...
     Position 5: 'A' = 'E'
-    ...
-    Position 26: 'A' = '0'
-    Position 27: 'A' = '1'
     """
 
     MAX_POSITIONS = len(string.ascii_lowercase)

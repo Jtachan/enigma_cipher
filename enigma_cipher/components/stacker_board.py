@@ -31,9 +31,10 @@ class StackerBoard:
         Parameters
         ----------
         keys_map: Mapping, optional
-            Mapping for every single letter. It is not necessary to specify both
-            directions as {"A": "B", "B": "A"}; the specification of {"A": "B", ...} is
-            enough for the class to understand the connection is bidirectional.
+            Mapping for every single letter.
+            It is not necessary to specify both directions as {"A": "B", "B": "A"};
+            the specification of {"A": "B", ...} is enough for the class to understand
+            the connection is bidirectional.
             If not given, no mapping is defined, meaning letter 'A' is mapped to 'A'
             and so on.
 
