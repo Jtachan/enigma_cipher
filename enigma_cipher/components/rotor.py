@@ -45,7 +45,7 @@ class Rotor:
         self.__current_pos = (self.__current_pos + 1) % self.MAX_POSITIONS
 
     @property
-    def will_position_reset(self) -> bool:
+    def will_reset_position(self) -> bool:
         """bool: Whether the rotor will reset to position 0 in the next update"""
         return self.__current_pos == self.MAX_POSITIONS - 1
 
