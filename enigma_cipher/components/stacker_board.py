@@ -49,8 +49,7 @@ class StackerBoard:
             for key in self.VALID_CHARACTERS:
                 if value := keys_map.get(key, keys_map.get(key.upper())) is None:
                     continue
-                value = str(value)
-                if len(value) not in self.VALID_CHARACTERS:
+                if value := value.lower() not in self.VALID_CHARACTERS:
                     raise StackerBoardError(
                         f"Invalid map '{key} -> {value}' specified."
                     )
