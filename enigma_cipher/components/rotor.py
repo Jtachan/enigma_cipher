@@ -19,7 +19,7 @@ class Rotor:
     Position 5: 'A' = 'E'
     """
 
-    MAX_POSITIONS = len(string.ascii_lowercase)
+    MAX_POSITIONS = len(string.ascii_uppercase)
 
     def __init__(self, position: int = 0):
         """
@@ -60,6 +60,6 @@ class Rotor:
         str:
             Encoded character as a new letter or digit.
         """
-        character_idx = string.ascii_lowercase.index(character)
+        character_idx = string.ascii_uppercase.index(character)
         encoded_char_idx = (character_idx + self.__current_pos) % self.MAX_POSITIONS
-        return string.ascii_lowercase[encoded_char_idx]
+        return string.ascii_uppercase[encoded_char_idx]

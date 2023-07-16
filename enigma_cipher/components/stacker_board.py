@@ -22,7 +22,7 @@ class StackerBoard:
     allows mapping also numbers.
     """
 
-    VALID_CHARACTERS = list(string.ascii_lowercase)
+    VALID_CHARACTERS = list(string.ascii_uppercase)
 
     def __init__(self, keys_map: Optional[Mapping[str, str]] = None):
         """
@@ -49,7 +49,7 @@ class StackerBoard:
             for key in self.VALID_CHARACTERS:
                 if value := keys_map.get(key, keys_map.get(key.upper())) is None:
                     continue
-                if value := value.lower() not in self.VALID_CHARACTERS:
+                if value := value.upper() not in self.VALID_CHARACTERS:
                     raise StackerBoardError(
                         f"Invalid map '{key} -> {value}' specified."
                     )
