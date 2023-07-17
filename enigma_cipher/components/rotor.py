@@ -46,7 +46,7 @@ class Rotor:
         """bool: Whether the rotor will reset to position 0 in the next update"""
         return self.__current_pos == self.MAX_POSITIONS - 1
 
-    def encode_character(self, character: str) -> str:
+    def encode_character(self, character: str, is_forward_path: bool) -> str:
         """
         Encodes a single character in function of the current rotor position.
 
@@ -54,6 +54,7 @@ class Rotor:
         ----------
         character: str
             Character to be encoded into a different one.
+        is_forward_path: bool
 
         Returns
         -------
@@ -61,5 +62,8 @@ class Rotor:
             Encoded character as a new letter or digit.
         """
         character_idx = string.ascii_uppercase.index(character)
-        encoded_char_idx = (character_idx + self.__current_pos) % self.MAX_POSITIONS
+        if is_forward_path:
+            encoded_char_idx = (character_idx - self.__current_pos) % self.MAX_POSITIONS
+        else:
+            encoded_char_idx = (character_idx + self.__current_pos) % self.MAX_POSITIONS
         return string.ascii_uppercase[encoded_char_idx]

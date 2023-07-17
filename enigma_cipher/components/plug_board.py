@@ -2,9 +2,10 @@
 This module contains the PlugBoard dataclass
 """
 from __future__ import annotations
+
+import random
 import string
 from typing import Mapping, Optional
-import random
 
 
 class StackerBoardError(ValueError):
