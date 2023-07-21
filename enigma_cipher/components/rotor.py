@@ -42,24 +42,26 @@ class Rotor:
         self.__current_pos = (self.__current_pos + 1) % self.MAX_POSITIONS
 
     @property
-    def will_reset_position(self) -> bool:
-        """bool: Whether the rotor will reset to position 0 in the next update"""
-        return self.__current_pos == self.MAX_POSITIONS - 1
+    def current_position(self) -> int:
+        """int: The current position of the rotor"""
+        return self.__current_pos
 
-    def encode_character(self, character: str, is_forward_path: bool) -> str:
+    def cipher_character(self, character: str, is_forward_path: bool) -> str:
         """
-        Encodes a single character in function of the current rotor position.
+        Ciphers a single character in function of the current rotor position.
 
         Parameters
         ----------
         character: str
-            Character to be encoded into a different one.
+            Character to be ciphered into a different one.
         is_forward_path: bool
+            Evaluates if the path of ciphering is forward (from input to reflector)
+            or backwards (from reflector to output).
 
         Returns
         -------
         str:
-            Encoded character as a new letter or digit.
+            Ciphered character as a new letter or digit.
         """
         character_idx = string.ascii_uppercase.index(character)
         if is_forward_path:

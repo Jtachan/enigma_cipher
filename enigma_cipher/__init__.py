@@ -6,9 +6,11 @@ More info about the Enigma Machine: https://en.wikipedia.org/wiki/Enigma_machine
 
 Package developed by Jaime Gonzalez
 LinkedIn: https://www.linkedin.com/in/jaime-gonzalezg/
+Github: https://github.com/Jtachan/enigma_cipher.git
 """
+__all__ = ["Reflector", "Rotor", "PlugBoard", "EnigmaCipher"]
+
 from enigma_cipher.components.plug_board import PlugBoard
 from enigma_cipher.components.reflector import Reflector
 from enigma_cipher.components.rotor import Rotor
-
-__all__ = ["Reflector", "Rotor", "PlugBoard"]
+from enigma_cipher.enigma_cipher import EnigmaCipher

@@ -27,13 +27,13 @@ class PlugBoard:
 
     VALID_CHARACTERS = list(string.ascii_uppercase)
 
-    def __init__(self, keys_map: Optional[Mapping[str, str]] = None):
+    def __init__(self, plugged_keys: Optional[Mapping[str, str]] = None):
         """
         Initializes the class from a given mapping.
 
         Parameters
         ----------
-        keys_map: Mapping, optional
+        plugged_keys: Mapping, optional
             Mapping for every single letter. If not given, no mapping is defined,
             meaning letter 'A' is mapped to 'A' and so on.
             It is not necessary to specify both directions as {"A": "B", "B": "A"};
@@ -47,13 +47,13 @@ class PlugBoard:
             If a letter is being mapped to different values or to a non-character and
             non-ascii value.
         """
-        if keys_map is None:
+        if plugged_keys is None:
             self.__keys_map = {key: key for key in self.VALID_CHARACTERS}
         else:
             final_mapping = {key: "" for key in self.VALID_CHARACTERS}
             unused_keys = self.VALID_CHARACTERS
 
-            for key, value in keys_map.items():
+            for key, value in plugged_keys.items():
                 key, value = key.upper(), value.upper()
                 if (
                     key not in self.VALID_CHARACTERS
@@ -89,15 +89,15 @@ class PlugBoard:
         for key, _ in zip(shuffled_keys, range(random.randint(0, 13))):
             keys_map[key] = next(shuffled_keys)
 
-        return cls(keys_map=keys_map)
+        return cls(plugged_keys=keys_map)
 
-    def encode_character(self, character: str) -> str:
+    def cipher_character(self, character: str) -> str:
         """
         Returns the mapped character on the plugboard
         """
         return self.__keys_map[character]
 
     @property
-    def keys_map(self) -> Mapping[str, str]:
+    def plugged_keys(self) -> Mapping[str, str]:
         """Mapping: Configured keys mapping for all valid characters"""
         return self.__keys_map
