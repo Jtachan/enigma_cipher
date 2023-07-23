@@ -3,7 +3,7 @@ This module contains the reflector class
 """
 import random
 import string
-from typing import Dict, Literal, Optional
+from typing import Dict, Final, Literal, Optional
 
 
 class ReflectorError(ValueError):
@@ -16,6 +16,35 @@ class Reflector:
     that an encoded text could be decoded with a machine having the same PlugBoard
     and Rotors configuration.
     """
+
+    _HISTORICAL_VALUES: Final[Dict[str, str]] = {
+        "A": "E",
+        "B": "J",
+        "C": "M",
+        "D": "Z",
+        "E": "A",
+        "F": "L",
+        "G": "Y",
+        "H": "X",
+        "I": "V",
+        "J": "B",
+        "K": "W",
+        "L": "F",
+        "M": "C",
+        "N": "R",
+        "O": "Q",
+        "P": "U",
+        "Q": "O",
+        "R": "N",
+        "S": "T",
+        "T": "S",
+        "U": "P",
+        "V": "I",
+        "W": "K",
+        "X": "H",
+        "Y": "G",
+        "Z": "D",
+    }
 
     def __init__(
         self,
@@ -58,34 +87,7 @@ class Reflector:
             self.__reflections = custom_map
 
         else:
-            self.__reflections = {
-                "A": "E",
-                "B": "J",
-                "C": "M",
-                "D": "Z",
-                "E": "A",
-                "F": "L",
-                "G": "Y",
-                "H": "X",
-                "I": "V",
-                "J": "B",
-                "K": "W",
-                "L": "F",
-                "M": "C",
-                "N": "R",
-                "O": "Q",
-                "P": "U",
-                "Q": "O",
-                "R": "N",
-                "S": "T",
-                "T": "S",
-                "U": "P",
-                "V": "I",
-                "W": "K",
-                "X": "H",
-                "Y": "G",
-                "Z": "D",
-            }
+            self.__reflections = Reflector._HISTORICAL_VALUES
 
     def reflect_character(self, character: str) -> str:
         """
@@ -107,3 +109,10 @@ class Reflector:
     def reflections_map(self) -> dict:
         """dict: Map that composes the reflector"""
         return self.__reflections
+
+    @property
+    def is_historical(self) -> bool:
+        """
+        bool: Whether the current reflector is defined in the historical configuration
+        """
+        return self.__reflections == Reflector._HISTORICAL_VALUES

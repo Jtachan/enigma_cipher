@@ -18,7 +18,6 @@ if __name__ == "__main__":
         "enigma machine cipher",
         long_description=long_description,
         long_description_content_type="text/markdown",
-        packages=setuptools.find_namespace_packages(include=["enigma_cipher.*"]),
-        namespace_packages=["enigma_cipher"],
+        packages=setuptools.find_packages(),
         install_requires=[],
     )
