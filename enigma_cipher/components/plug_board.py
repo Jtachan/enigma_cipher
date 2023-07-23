@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import random
 import string
-from typing import Mapping, Optional
+from typing import Final, Mapping, Optional, Sequence
 
 
 class StackerBoardError(ValueError):
@@ -25,7 +25,7 @@ class PlugBoard:
     allows mapping also numbers.
     """
 
-    VALID_CHARACTERS = list(string.ascii_uppercase)
+    VALID_CHARACTERS: Final[Sequence[str]] = list(string.ascii_uppercase)
 
     def __init__(self, plugged_keys: Optional[Mapping[str, str]] = None):
         """
@@ -51,7 +51,7 @@ class PlugBoard:
             self.__keys_map = {key: key for key in self.VALID_CHARACTERS}
         else:
             final_mapping = {key: "" for key in self.VALID_CHARACTERS}
-            unused_keys = self.VALID_CHARACTERS
+            unused_keys = list(self.VALID_CHARACTERS)
 
             for key, value in plugged_keys.items():
                 key, value = key.upper(), value.upper()

@@ -1,7 +1,9 @@
 """
 This module contains the Rotor class
 """
+import random
 import string
+from typing import Final
 
 
 class Rotor:
@@ -19,7 +21,7 @@ class Rotor:
     Position 5: 'A' = 'E'
     """
 
-    MAX_POSITIONS = len(string.ascii_uppercase)
+    MAX_POSITIONS: Final[int] = len(string.ascii_uppercase)
 
     def __init__(self, position: int = 0):
         """
@@ -33,6 +35,11 @@ class Rotor:
             analogous value. For example, position 50 is equivalent to position 14.
         """
         self.__current_pos = position % self.MAX_POSITIONS
+
+    @classmethod
+    def random_init(cls):
+        """Initializes the Rotor class in a random position"""
+        return cls(random.randint(0, 26))
 
     def update_position(self):
         """

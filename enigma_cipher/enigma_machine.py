@@ -1,18 +1,19 @@
 """
-This module contains the EnigmaCipher class
+This module contains the EnigmaMachine class
 """
 from __future__ import annotations
 
 import json
 import os
-from typing import Sequence
+import random
+from typing import Optional, Sequence
 
 from enigma_cipher.components.plug_board import PlugBoard
 from enigma_cipher.components.reflector import Reflector
 from enigma_cipher.components.rotor import Rotor
 
 
-class EnigmaCipher:
+class EnigmaMachine:
     """
     This class allows encoding and decoding text messages. Only alphabetic characters
     are encoded, other characters are returned as they are.
@@ -37,10 +38,15 @@ class EnigmaCipher:
         reflector: Reflector
             Component of the reflector
         """
+        if reflector.is_historical:
+            reflector_config = "historical"
+        else:
+            reflector_config = reflector.reflections_map
+
         self.__init_config = {
             "plugboard": plugboard.plugged_keys,
             "rotors": [rotor.current_position for rotor in rotors],
-            "reflector": reflector.reflections_map,
+            "reflector": reflector_config,
         }
 
         self.__plugboard = plugboard
@@ -48,7 +54,7 @@ class EnigmaCipher:
         self.__reflector = reflector
 
     @classmethod
-    def from_configuration(cls, configuration: dict) -> EnigmaCipher:
+    def from_configuration(cls, configuration: dict) -> EnigmaMachine:
         """
         Initializes the Cipher from a specific configuration.
 
@@ -56,16 +62,23 @@ class EnigmaCipher:
         ----------
         configuration: dict
             Configuration defined in a dictionary, which must be similar to the one
-            returned by EnigmaCipher.initial_config
+            returned by EnigmaMachine.initial_config
         """
+        if isinstance(reflector_config := configuration["reflector"], dict):
+            reflector = Reflector(mode="custom", custom_map=reflector_config)
+        elif reflector_config in ("random", "historical"):
+            reflector = Reflector(mode=reflector_config)
+        else:
+            raise ValueError("Unknown configuration for reflector")
+
         return cls(
             plugboard=PlugBoard(configuration["plugboard"]),
             rotors=[Rotor(pos) for pos in configuration["rotors"]],
-            reflector=Reflector(mode="custom", custom_map=configuration["reflector"]),
+            reflector=reflector,
         )
 
     @classmethod
-    def from_configuration_file(cls, input_path: str) -> EnigmaCipher:
+    def from_configuration_file(cls, input_path: str) -> EnigmaMachine:
         """
         Initializes the Cipher from a '.json' configuration file.
 
@@ -83,6 +96,26 @@ class EnigmaCipher:
             config_dict = json.load(input_file)
 
         return cls.from_configuration(config_dict)
+
+    @classmethod
+    def random_configuration(cls, nof_rotors: Optional[int] = None) -> EnigmaMachine:
+        """
+        Initializes the EnigmaMachine from a totally random configuration.
+
+        Parameters
+        ----------
+        nof_rotors: int, optional
+            Number of rotors to be contained within the machine. If not specified,
+            a randon number of them between 2 and 10 will be configured.
+        """
+        if nof_rotors is None:
+            nof_rotors = random.randint(2, 10)
+
+        return cls(
+            plugboard=PlugBoard.random_map(),
+            rotors=[Rotor(random.randint(0, 26)) for _ in range(nof_rotors)],
+            reflector=Reflector(mode="random"),
+        )
 
     def export_configuration_to_json_file(self, output_path: str, force: bool = False):
         """

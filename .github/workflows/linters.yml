@@ -25,8 +25,8 @@ jobs:
           pip install -r dev_requirements.txt
       - name: Run linters
         run: |
-          isort --check enigma_cipher setup.py
-          black --check enigma_cipher setup.py
+          isort --check enigma_cipher setup.py unittests
+          black --check enigma_cipher setup.py unittests
           pip install .
-          flake8 --tee --format=pylint enigma_cipher 
-          pylint --rcfile=pylintrc enigma_cipher
+          flake8 --tee --format=pylint enigma_cipher unittests
+          pylint --rcfile=pylintrc enigma_cipher unittests
