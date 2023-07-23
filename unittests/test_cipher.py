@@ -1,8 +1,9 @@
 """
 Module containing tests for the EnigmaMachine class
 """
-import pytest
 import random
+
+import pytest
 
 from enigma_cipher import EnigmaMachine
 
