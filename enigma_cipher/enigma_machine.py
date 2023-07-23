@@ -98,7 +98,7 @@ class EnigmaMachine:
         return cls.from_configuration(config_dict)
 
     @classmethod
-    def random_configuration(cls, nof_rotors: Optional[int] = None):
+    def random_configuration(cls, nof_rotors: Optional[int] = None) -> EnigmaMachine:
         """
         Initializes the EnigmaMachine from a totally random configuration.
 
@@ -110,6 +110,12 @@ class EnigmaMachine:
         """
         if nof_rotors is None:
             nof_rotors = random.randint(2, 10)
+
+        return cls(
+            plugboard=PlugBoard.random_map(),
+            rotors=[Rotor(random.randint(0, 26)) for _ in range(nof_rotors)],
+            reflector=Reflector(mode="random"),
+        )
 
     def export_configuration_to_json_file(self, output_path: str, force: bool = False):
         """

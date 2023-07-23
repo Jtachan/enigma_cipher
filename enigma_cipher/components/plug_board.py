@@ -51,7 +51,7 @@ class PlugBoard:
             self.__keys_map = {key: key for key in self.VALID_CHARACTERS}
         else:
             final_mapping = {key: "" for key in self.VALID_CHARACTERS}
-            unused_keys = self.VALID_CHARACTERS
+            unused_keys = list(self.VALID_CHARACTERS)
 
             for key, value in plugged_keys.items():
                 key, value = key.upper(), value.upper()
