@@ -1,14 +1,34 @@
-https://github.com/Jtachan/enigma_cipher/actions/workflows/unittests.yml/badge.svg
+![Badge](https://github.com/Jtachan/enigma_cipher/actions/workflows/unittests.yml/badge.svg)
 
 # Enigma Cipher
 
 The `Enigma Cipher` is a package that allows ciphering texts as an enigma machine would.
-Further on, it is referred to 'cipher' the text instead of encoding/decoding.
-This is because a machine can decode a text, which was encoded by another machine with the same configuration, by 're-encoding' it.
 
+It is referred to 'cipher' the text instead of encoding/decoding, as any text can be encoded or decoded bz ciphering it with a machine with the same configuration.
+For example, if the text `VLGBR OYWVV!` is ciphered through a machine with the correct configuration, the outcome will be `HELLO WORLD!`
 
+## Setup
 
-To do so, the package allows:
-- Initialization with a specific configuration.
-- Full random initialization.
-- 
+**Requirements**
+
+- Python 3.8 or higher
+
+**Installation**
+
+Use pip with the git link to the repo:
+````commandline
+pip install git+https://github.com/Jtachan/enigma_cipher.git
+````
+
+The 'develop' branch can also be installed to work with unreleased features:
+````commandline
+pip install git+https://github.com/Jtachan/enigma_cipher.git@develop
+````
+
+## Features
+
+### Machine initialization
+
+### Static state for multiple ciphering
+
+### 
