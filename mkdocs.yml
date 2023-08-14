@@ -1,0 +1,44 @@
+site_name: Enigma Cipher
+repo_url: https://github.com/Jtachan/enigma_cipher
+theme:
+  name: material
+  # color scheme configuration
+  # changing between light and dark mode is already enabled
+  # available primary colors: https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#primary-color
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  features:
+    - content.code.annotate
+    - content.code.copy
+    - navigation.instant
+    - navigation.footer
+    - navigation.sections
+    - search.suggest
+    - search.highlight
+markdown_extensions:
+  # some selected markdown extensions
+  # feel free to add more
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - footnotes
+  - toc:
+      permalink: true
+plugins:
+  - search
+nav:
+  - Home: 'index.md'
+extra:
+  version:
+    provider: mike # allows deploying versioned documentation for each release
