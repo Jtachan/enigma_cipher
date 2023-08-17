@@ -65,7 +65,7 @@ class PlugBoard:
                     )
                 if final_mapping[key] == value:
                     continue
-                elif final_mapping[key] != "":
+                if final_mapping[key] != "":
                     raise StackerBoardError(
                         f"Key '{key}' mapped to '{value}' and '{final_mapping[key]}'."
                     )
@@ -87,7 +87,7 @@ class PlugBoard:
         contain all letters connected or only a few.
         """
         keys_map = {}
-        shuffled_keys = iter(random.sample(cls.VALID_CHARACTERS, 26))
+        shuffled_keys = iter(random.sample(list(cls.VALID_CHARACTERS), 26))
         for key, _ in zip(shuffled_keys, range(random.randint(0, 13))):
             keys_map[key] = next(shuffled_keys)
 
