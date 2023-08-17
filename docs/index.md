@@ -30,6 +30,6 @@ pip install git+https://github.com/Jtachan/enigma_cipher.git@develop
 
 ## Index
 
-- First steps
+- [Getting started](getting_started.md)
 - Components
 - Enigma Machine
