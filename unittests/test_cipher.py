@@ -1,6 +1,7 @@
 """
 Module containing tests for the EnigmaMachine class
 """
+import os
 import random
 
 import pytest
@@ -49,3 +50,14 @@ def test_message_reflection(nof_rotors: int):
 
     encoded_text = cipher.cipher_text(text)
     assert text == cipher.cipher_text(encoded_text).capitalize()
+
+
+def test_init_from_file():
+    """
+    Checking correct initialization from a configuration file. If initialized
+    correctly, the ciphered text (decoded) should read 'HELLO WORLD!'
+    """
+    cipher = EnigmaMachine.from_configuration_file(
+        os.path.join("unittests", "enigma_config.json")
+    )
+    assert "HELLO WORLD!" == cipher.cipher_text("OQOAX LBGBU!")
