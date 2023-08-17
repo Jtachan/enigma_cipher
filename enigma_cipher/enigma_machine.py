@@ -135,7 +135,7 @@ class EnigmaMachine:
             raise FileExistsError("The specified file already exist.")
 
         with open(output_path, "w", encoding="utf-8") as out_file:
-            json.dump(self.__init_config, out_file)
+            json.dump(self.__init_config, out_file, indent=2)
 
         print(f"Configuration exported to '{output_path}'")
 
