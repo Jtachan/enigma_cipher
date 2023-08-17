@@ -18,7 +18,8 @@ Now the instance is ready to use.
 The only thing left is to feed it the text or texts to cipher.
 
 ```python
-cipher.cipher_text("Hello world!")
+text = cipher.cipher_text("Hello world!")
+print(text)
 # 'OQOAX LBGBU!'
 ```
 
@@ -26,7 +27,8 @@ The term 'cipher' means to put a message through a code.
 Thus, the same machine can decode the message with the same command.
 
 ```python
-cipher.cipher_text("OQOAX LBGBU!")
+text = cipher.cipher_text("OQOAX LBGBU!")
+print(text)
 # 'HELLO WORLD!'
 ```
 
