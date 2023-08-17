@@ -36,7 +36,7 @@ However, only machines with **the same configuration** can decode texts.
 Otherwise, you would be encoding another encoded text.
 
 You might have encountered the case in which you followed this quick tutorial, and your results were totally different from the ones exposed here.
-That is totally normal, as your EnigmaMachine would have a different configuration.
+That is totally normal, as your `EnigmaMachine` would have a different configuration.
 
 `EnigmaCipher` also allows you to initialize your machine from a given configuration saved in a .json file, or export your configuration so later on other machine can decode the texts that were previously encoded.
 
