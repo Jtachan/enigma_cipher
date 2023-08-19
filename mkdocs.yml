@@ -4,7 +4,7 @@ repo_url: https://github.com/Jtachan/enigma_cipher
 nav:
   - Home: 'index.md'
   - Getting started: 'getting_started.md'
-  - Components: 'components.md'
+  - How it works: 'components.md'
   - Documentation:
       - PlugBoard: 'plug_board.md'
       - Rotor: 'rotor.md'
