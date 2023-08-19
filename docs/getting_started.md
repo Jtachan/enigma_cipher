@@ -48,7 +48,7 @@ cipher.export_configuration_to_json_file("enigma_config.json")
 cipher = EnigmaMachine.from_configuration_file("enigma_config.json")
 ```
 
-If you want to check everything is correct, you can download this [configuration file](../unittests/enigma_config.json) and initialize your machine with it. Then, try to decode the following text:
+If you want to check everything is correct, you can download this [configuration file](files/enigma_config.json) and initialize your machine with it. Then, try to decode the following text:
 
 ```commandline
 ELGDZBZO! RRT BTA YQRV PJR NM DESXQF NVJZX CINME OAI ILWEPH ODEXUWB.

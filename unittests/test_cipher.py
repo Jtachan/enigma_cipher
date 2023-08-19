@@ -58,6 +58,6 @@ def test_init_from_file():
     correctly, the ciphered text (decoded) should read 'HELLO WORLD!'
     """
     cipher = EnigmaMachine.from_configuration_file(
-        os.path.join("unittests", "enigma_config.json")
+        os.path.join("docs", "files", "enigma_config.json")
     )
     assert "HELLO WORLD!" == cipher.cipher_text("OQOAX LBGBU!")
