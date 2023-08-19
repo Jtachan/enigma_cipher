@@ -8,7 +8,7 @@ import string
 from typing import Final, Mapping, Optional, Set
 
 
-class StackerBoardError(ValueError):
+class PlugBoardError(ValueError):
     """
     Error to be raised if there is any conflict within the PlugBoard class
     """
@@ -20,9 +20,6 @@ class PlugBoard:
     can be mapped to another letter only once. Also, mapping the letter 'A' with the
     letter 'T' will block this combination, not allowing mapping the letter 'T' with
     any other letter.
-
-    In difference to the original 'Steckerbrett' from the Enigma Machine, this one
-    allows mapping also numbers.
     """
 
     VALID_CHARACTERS: Final[Set[str]] = set(string.ascii_uppercase)
@@ -43,7 +40,7 @@ class PlugBoard:
 
         Raises
         ------
-        StackerBoardError:
+        PlugBoardError:
             If a letter is being mapped to different values or to a non-character and
             non-ascii value.
         """
@@ -59,14 +56,14 @@ class PlugBoard:
                     key not in self.VALID_CHARACTERS
                     or value not in self.VALID_CHARACTERS
                 ):
-                    raise StackerBoardError(
+                    raise PlugBoardError(
                         f"Invalid mapping given. Only characters "
                         f"'{self.VALID_CHARACTERS}' are allowed"
                     )
                 if final_mapping[key] == value:
                     continue
                 if final_mapping[key] != "":
-                    raise StackerBoardError(
+                    raise PlugBoardError(
                         f"Key '{key}' mapped to '{value}' and '{final_mapping[key]}'."
                     )
 
