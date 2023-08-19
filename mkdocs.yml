@@ -1,5 +1,16 @@
 site_name: Enigma Cipher
 repo_url: https://github.com/Jtachan/enigma_cipher
+
+nav:
+  - Home: 'index.md'
+  - Getting started: 'getting_started.md'
+  - Components: 'components.md'
+  - Documentation:
+      - PlugBoard: 'plug_board.md'
+      - Rotor: 'rotor.md'
+      - Reflector: 'reflector.md'
+      - EnigmaMachine: 'enigma_machine.md'
+
 theme:
   name: material
   # color scheme configuration
@@ -37,9 +48,6 @@ markdown_extensions:
       permalink: true
 plugins:
   - search
-nav:
-  - Home: 'index.md'
-  - Getting started: 'getting_started.md'
 extra:
   version:
     provider: mike # allows deploying versioned documentation for each release
