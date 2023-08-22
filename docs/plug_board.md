@@ -26,7 +26,9 @@ _Returns_
 
 ### `PlugBoard.random_map()`
 
-Initializes the PlugBoard class with a random mapping among the letters.
+_Returns_
+
+- `PlugBoard`:<br/>Initializes the PlugBoard class with a random mapping among the letters.
 The mapping can hold from no mapping among letters to having all letters mapped.
 
 ## Properties

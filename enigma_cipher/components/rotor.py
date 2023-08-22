@@ -48,11 +48,6 @@ class Rotor:
         """
         self.__current_pos = (self.__current_pos + 1) % self.MAX_POSITIONS
 
-    @property
-    def current_position(self) -> int:
-        """int: The current position of the rotor"""
-        return self.__current_pos
-
     def cipher_character(self, character: str, is_forward_path: bool) -> str:
         """
         Ciphers a single character in function of the current rotor position.
@@ -76,3 +71,8 @@ class Rotor:
         else:
             encoded_char_idx = (character_idx + self.__current_pos) % self.MAX_POSITIONS
         return string.ascii_uppercase[encoded_char_idx]
+
+    @property
+    def current_position(self) -> int:
+        """int: The current position of the rotor"""
+        return self.__current_pos
