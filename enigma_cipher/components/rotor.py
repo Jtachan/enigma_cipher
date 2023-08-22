@@ -60,7 +60,7 @@ class Rotor:
         Parameters
         ----------
         character: str
-            Character to be ciphered into a different one.
+            Character to be ciphered.
         is_forward_path: bool
             Evaluates if the path of ciphering is forward (from input to reflector)
             or backwards (from reflector to output).
@@ -68,7 +68,7 @@ class Rotor:
         Returns
         -------
         str:
-            Ciphered character as a new letter or digit.
+            Ciphered character as a new letter.
         """
         character_idx = string.ascii_uppercase.index(character)
         if is_forward_path:
