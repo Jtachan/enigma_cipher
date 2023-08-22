@@ -22,11 +22,12 @@ def test_cipher_configuration():
 
     for key in cipher_config["plugboard"]:
         assert (
-            cipher_config["plugboard"][key] == cipher.configuration["plugboard"][key]
+            cipher_config["plugboard"][key]
+            == cipher.initial_configuration["plugboard"][key]
         ), f"Key '{key}' is not plugged to the correct one"
 
     for rotor_idx, (expected_rotor, configured_rotor) in enumerate(
-        zip(cipher_config["rotors"], cipher.configuration["rotors"])
+        zip(cipher_config["rotors"], cipher.initial_configuration["rotors"])
     ):
         expected_rotor = expected_rotor % 26
         assert expected_rotor == configured_rotor, (
@@ -35,7 +36,7 @@ def test_cipher_configuration():
         )
 
     assert (
-        cipher_config["reflector"] == cipher.configuration["reflector"]
+        cipher_config["reflector"] == cipher.initial_configuration["reflector"]
     ), "Reflector is not the correct one"
 
 
