@@ -32,7 +32,8 @@ class EnigmaMachine:
         Parameters
         ----------
         plugboard: PlugBoard
-            Component of the original plugboard.
+            Component of the plugboard. It specifies the mapping among all the keys
+            at the input/output level.
         rotors: sequence of Rotors
             Initialized Rotor instances. While the historic enigma machine contained
             only three rotors, this parameter allows setting as many or few as desired.
@@ -167,10 +168,9 @@ class EnigmaMachine:
 
     def cipher_text(self, text: str) -> str:
         """
-        Proceeds to cipher a given text. After the operation, the machine returns
-        to the initial configuration of the components.
-        Normal texts are encoded, while encoded texts are decoded if the cipher has
-        the same configuration as the machine that encoded the text.
+        Proceeds to cipher a given text.
+        Ciphering will decode an encoded text if the machine has the same
+        configuration as the initial machine that encoded the text.
 
         Parameters
         ----------

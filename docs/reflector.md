@@ -2,6 +2,12 @@
 
 The reflector connects, in pairs, all the positions of the letters. This allows that an encoded text could be decoded with a machine having the same PlugBoard and Rotors configuration.
 
+The `Reflector` class can be imported directly from the `enigma_cipher` package:
+
+```python
+from enigma_cipher import Reflector
+```
+
 ## `Reflector(mode="historical", custom_map=None)`
 
 Initializes the reflector instance.

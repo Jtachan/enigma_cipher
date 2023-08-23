@@ -3,6 +3,12 @@
 The `PlugBoard` provides the mapping of each letter to another one. ach letter can be mapped to another letter only once.
 Mapping the letter 'A' with the letter 'T' will block this combination, not allowing mapping the letter 'T' with any other letter.
 
+The `PlugBoard` class can be imported directly from the `enigma_cipher` package:
+
+```python
+from enigma_cipher import PlugBoard
+```
+
 ## `PlugBoard(plugged_keys=None)`
 
 Initializes the `PlugBoard` from the given mapping of keys.

@@ -7,6 +7,12 @@ A rotor at position 3 will map a character with the one three positions ahead, f
 After ciphering a character, the first rotor will update its position in 1.
 The next rotors will update their position when the previous rotor has done a full spin.
 
+The `Rotor` class can be imported directly from the `enigma_cipher` package:
+
+```python
+from enigma_cipher import Rotor
+```
+
 ## `Rotor(position=0)`
 
 Initializes the `Rotor` instance at the specified position.
