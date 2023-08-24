@@ -25,10 +25,3 @@ The 'develop' branch can also be installed to work with unreleased features:
 pip install git+https://github.com/Jtachan/enigma_cipher.git@develop
 ````
 
-## Features
-
-### Machine initialization
-
-### Static state for multiple ciphering
-
-### 
