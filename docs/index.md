@@ -31,5 +31,8 @@ pip install git+https://github.com/Jtachan/enigma_cipher.git@develop
 ## Index
 
 - [Getting started](getting_started.md)
-- Components
-- Enigma Machine
+- [Components](components.md)
+- [Plug Board](plug_board.md)
+- [Rotor](rotor.md)
+- [Reflector](reflector.md)
+- [Enigma Machine](enigma_machine.md)
