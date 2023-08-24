@@ -64,7 +64,7 @@ class Reflector:
         custom_map: dict, optional
             Mapping of all characters.
             The characters must be specified in uppercase, and each letter must be
-            paired to only one other letter.
+            paired to only one another letter.
         """
         if mode == "random":
             reflections = {}

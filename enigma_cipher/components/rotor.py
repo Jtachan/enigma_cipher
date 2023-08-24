@@ -31,8 +31,8 @@ class Rotor:
         ----------
         position: int, default = 0
             Value of the position to the rotor that defines the character mapping.
-            The maximum valid position is 35. Any position higher will take its wrapped
-            analogous value. For example, position 50 is equivalent to position 14.
+            The maximum valid position is 26. Any position higher will take its wrapped
+            analogous value. For example, position 32 is equivalent to position 6.
         """
         self.__current_pos = position % self.MAX_POSITIONS
 
@@ -43,15 +43,10 @@ class Rotor:
 
     def update_position(self):
         """
-        Updates the rotor position in 1, returning to position 0 when position 36
-        is reached.
+        Updates the rotor position in one unit, returning to position 0 when
+        position 26 is reached.
         """
         self.__current_pos = (self.__current_pos + 1) % self.MAX_POSITIONS
-
-    @property
-    def current_position(self) -> int:
-        """int: The current position of the rotor"""
-        return self.__current_pos
 
     def cipher_character(self, character: str, is_forward_path: bool) -> str:
         """
@@ -60,7 +55,7 @@ class Rotor:
         Parameters
         ----------
         character: str
-            Character to be ciphered into a different one.
+            Character to be ciphered.
         is_forward_path: bool
             Evaluates if the path of ciphering is forward (from input to reflector)
             or backwards (from reflector to output).
@@ -68,7 +63,7 @@ class Rotor:
         Returns
         -------
         str:
-            Ciphered character as a new letter or digit.
+            Ciphered character as a new letter.
         """
         character_idx = string.ascii_uppercase.index(character)
         if is_forward_path:
@@ -76,3 +71,8 @@ class Rotor:
         else:
             encoded_char_idx = (character_idx + self.__current_pos) % self.MAX_POSITIONS
         return string.ascii_uppercase[encoded_char_idx]
+
+    @property
+    def current_position(self) -> int:
+        """int: The current position of the rotor"""
+        return self.__current_pos
