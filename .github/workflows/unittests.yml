@@ -3,9 +3,9 @@ name: Tests
 # Controls when the workflow will run
 on:
   push:
-    branches: ["master", "develop"]
+    branches: ["main", "develop"]
   pull_request:
-    branches: ["master", "develop"]
+    branches: ["main", "develop"]
 
 jobs:
   build:

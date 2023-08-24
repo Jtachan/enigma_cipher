@@ -7,6 +7,9 @@ The `Enigma Cipher` is a package that allows ciphering texts as an enigma machin
 It is referred to 'cipher' the text instead of encoding/decoding, as any text can be encoded or decoded bz ciphering it with a machine with the same configuration.
 For example, if the text `VLGBR OYWVV!` is ciphered through a machine with the correct configuration, the outcome will be `HELLO WORLD!`
 
+You can find the documentation here:<br/>
+https://jtachan.github.io/enigma_cipher/
+
 ## Setup
 
 **Requirements**
