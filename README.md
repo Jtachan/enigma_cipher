@@ -1,5 +1,6 @@
 ![tests_badge](https://github.com/Jtachan/enigma_cipher/actions/workflows/unittests.yml/badge.svg)
 ![docs_badge](https://github.com/Jtachan/enigma_cipher/actions/workflows/docs.yml/badge.svg)
+![release_badge](https://github.com/Jtachan/enigma_cipher/actions/workflows/release.yml/badge.svg)
 
 # Enigma Cipher
 
