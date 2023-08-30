@@ -24,9 +24,9 @@ You can find the documentation:
 
 **Installation**
 
-Use pip with the git link to the repo:
+The package is installable via pip:
 ````commandline
-pip install git+https://github.com/Jtachan/enigma_cipher.git
+pip install enigma-cipher
 ````
 
 The 'develop' branch can also be installed to work with unreleased features:
