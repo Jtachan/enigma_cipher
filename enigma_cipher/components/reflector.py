@@ -2,8 +2,9 @@
 This module contains the reflector class
 """
 import random
-import string
 from typing import Dict, Final, Literal, Optional
+
+from enigma_cipher.components.characters import Characters
 
 
 class ReflectorError(ValueError):
@@ -50,6 +51,7 @@ class Reflector:
         self,
         mode: Literal["random", "historical", "custom"] = "historical",
         custom_map: Optional[Dict[str, str]] = None,
+        include_digits: bool = False,
     ):
         """
         Initializes the reflector
@@ -65,10 +67,27 @@ class Reflector:
             Mapping of all characters.
             The characters must be specified in uppercase, and each letter must be
             paired to only one another letter.
+        include_digits: bool, default = False
+            If True, the Reflector will include the digits to be ciphered. As default,
+            only letters are to be ciphered.
+            This value is only considered for 'random' mode, as its value is computed
+            for 'custom' mode and set to False for 'historical' mode.
         """
+        if mode not in {"random", "historical", "custom"}:
+            raise ReflectorError(f"Invalid mode '{mode}' given.")
+
         if mode == "random":
+            self.__valid_characters = (
+                Characters.ALPHANUMERIC if include_digits else Characters.ALPHABETIC
+            )
+
             reflections = {}
-            characters = iter(random.sample(string.ascii_uppercase, 26))
+            characters = iter(
+                random.sample(
+                    list(self.__valid_characters.value),
+                    len(self.__valid_characters.value),
+                )
+            )
             for key in characters:
                 if key in reflections:
                     continue
@@ -77,17 +96,28 @@ class Reflector:
                 reflections[key] = value
                 reflections[value] = key
 
-            self.__reflections = reflections
+            self._reflections = reflections
 
         elif mode == "custom":
             if custom_map is None:
                 raise ReflectorError(
                     "Mode 'custom' was given, but no map was specified."
                 )
-            self.__reflections = custom_map
+            alphanumeric_characters = Characters.ALPHANUMERIC.value
+            for key in custom_map:
+                if key not in alphanumeric_characters:
+                    raise ReflectorError(f"Invalid character '{key}' given")
+
+            if set(custom_map.keys()) == alphanumeric_characters:
+                self.__valid_characters = Characters.ALPHANUMERIC
+            else:
+                self.__valid_characters = Characters.ALPHABETIC
+                
+            self._reflections = custom_map
 
         else:
-            self.__reflections = Reflector._HISTORICAL_VALUES
+            self.__valid_characters = Characters.ALPHABETIC
+            self._reflections = Reflector._HISTORICAL_VALUES
 
     def reflect_character(self, character: str) -> str:
         """
@@ -103,16 +133,21 @@ class Reflector:
         str:
             Reflection of the given letter.
         """
-        return self.__reflections[character]
+        return self._reflections[character]
 
     @property
     def reflections_map(self) -> dict:
         """dict: Map that composes the reflector"""
-        return self.__reflections
+        return self._reflections
 
     @property
     def is_historical(self) -> bool:
         """
         bool: Whether the current reflector is defined in the historical configuration
         """
-        return self.__reflections == Reflector._HISTORICAL_VALUES
+        return self._reflections == Reflector._HISTORICAL_VALUES
+
+    @property
+    def contains_digits(self) -> bool:
+        """bool: Whether if the Reflector contains digits as valid characters"""
+        return self.__valid_characters is Characters.ALPHANUMERIC
