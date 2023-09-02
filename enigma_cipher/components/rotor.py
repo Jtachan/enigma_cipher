@@ -40,9 +40,11 @@ class Rotor:
             letters are to be ciphered.
         """
         self.__valid_characters = (
-            Characters.ALPHANUMERIC if include_digits else Characters.ALPHABETIC
+            list(Characters.ALPHANUMERIC.value)
+            if include_digits
+            else list(Characters.ALPHABETIC.value)
         )
-        self.__max_positions = len(self.__valid_characters.value)
+        self.__max_positions = len(self.__valid_characters)
 
         self._current_pos = position % self.__max_positions
 
@@ -91,7 +93,7 @@ class Rotor:
         str:
             Ciphered character as a new letter.
         """
-        character_idx = self.__valid_characters.value.index(character)
+        character_idx = self.__valid_characters.index(character)
         if is_forward_path:
             encoded_char_idx = (
                 character_idx - self._current_pos
@@ -100,7 +102,7 @@ class Rotor:
             encoded_char_idx = (
                 character_idx + self._current_pos
             ) % self.__max_positions
-        return self.__valid_characters.value[encoded_char_idx]
+        return self.__valid_characters[encoded_char_idx]
 
     @property
     def current_position(self) -> int:
@@ -110,4 +112,4 @@ class Rotor:
     @property
     def contains_digits(self) -> bool:
         """bool: Whether if the Rotor contains digits as valid characters to cipher"""
-        return self.__valid_characters is Characters.ALPHANUMERIC
+        return self.__max_positions == 36

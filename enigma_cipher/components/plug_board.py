@@ -55,7 +55,7 @@ class PlugBoard:
         )
 
         if plugged_keys is None:
-            self.__keys_map = {key: key for key in self.__valid_characters.value}
+            self._keys_map = {key: key for key in self.__valid_characters.value}
         else:
             final_mapping = {key: "" for key in self.__valid_characters.value}
             unused_keys = list(self.__valid_characters.value)
@@ -85,7 +85,7 @@ class PlugBoard:
             for key in unused_keys:
                 final_mapping[key] = key
 
-            self.__keys_map = final_mapping
+            self._keys_map = final_mapping
 
     @classmethod
     def random_map(cls, include_digits: bool = False) -> PlugBoard:
@@ -119,12 +119,12 @@ class PlugBoard:
         """
         Returns the mapped character on the plugboard
         """
-        return self.__keys_map[character]
+        return self._keys_map[character]
 
     @property
     def plugged_keys(self) -> Mapping[str, str]:
         """Mapping: Configured keys mapping for all valid characters"""
-        return self.__keys_map
+        return self._keys_map
 
     @property
     def contains_digits(self) -> bool:
