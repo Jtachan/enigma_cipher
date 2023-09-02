@@ -112,7 +112,7 @@ class Reflector:
                 self.__valid_characters = Characters.ALPHANUMERIC
             else:
                 self.__valid_characters = Characters.ALPHABETIC
-                
+
             self._reflections = custom_map
 
         else:
