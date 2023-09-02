@@ -1,9 +1,11 @@
 """
 This module contains the Rotor class
 """
+from __future__ import annotations
+
 import random
-import string
-from typing import Final
+
+from enigma_cipher.components.characters import Characters
 
 
 class Rotor:
@@ -21,9 +23,7 @@ class Rotor:
     Position 5: 'A' = 'E'
     """
 
-    MAX_POSITIONS: Final[int] = len(string.ascii_uppercase)
-
-    def __init__(self, position: int = 0):
+    def __init__(self, position: int = 0, include_digits: bool = False):
         """
         Initializes the Rotor
 
@@ -32,21 +32,47 @@ class Rotor:
         position: int, default = 0
             Value of the position to the rotor that defines the character mapping.
             The maximum valid position is 26. Any position higher will take its wrapped
-            analogous value. For example, position 32 is equivalent to position 6.
+            analogous value. For example, position 32 is equivalent to position 6,
+            counting only with alphabetic characters.
+        include_digits: bool, default = False
+            If True, the Rotor will include the digits to be ciphered. This also
+            affects the number of os positions the rotor can have. As default, only
+            letters are to be ciphered.
         """
-        self.__current_pos = position % self.MAX_POSITIONS
+        self.__valid_characters = (
+            Characters.ALPHANUMERIC if include_digits else Characters.ALPHABETIC
+        )
+        self.__max_positions = len(self.__valid_characters.value)
+
+        self._current_pos = position % self.__max_positions
 
     @classmethod
-    def random_init(cls):
-        """Initializes the Rotor class in a random position"""
-        return cls(random.randint(0, 26))
+    def random_init(cls, include_digits: bool = False) -> Rotor:
+        """
+        Initializes the Rotor class in a random position
+
+        Parameters
+        ----------
+        include_digits: bool, default = False
+            If True, the Rotor will include the digits to be ciphered. This also
+            affects the number of os positions the rotor can have. As default, only
+            letters are to be ciphered.
+        """
+        nof_characters = (
+            len(Characters.ALPHANUMERIC.value)
+            if include_digits
+            else len(Characters.ALPHABETIC.value)
+        )
+        return cls(
+            position=random.randint(0, nof_characters), include_digits=include_digits
+        )
 
     def update_position(self):
         """
         Updates the rotor position in one unit, returning to position 0 when
         position 26 is reached.
         """
-        self.__current_pos = (self.__current_pos + 1) % self.MAX_POSITIONS
+        self._current_pos = (self._current_pos + 1) % self.__max_positions
 
     def cipher_character(self, character: str, is_forward_path: bool) -> str:
         """
@@ -65,14 +91,23 @@ class Rotor:
         str:
             Ciphered character as a new letter.
         """
-        character_idx = string.ascii_uppercase.index(character)
+        character_idx = self.__valid_characters.value.index(character)
         if is_forward_path:
-            encoded_char_idx = (character_idx - self.__current_pos) % self.MAX_POSITIONS
+            encoded_char_idx = (
+                character_idx - self._current_pos
+            ) % self.__max_positions
         else:
-            encoded_char_idx = (character_idx + self.__current_pos) % self.MAX_POSITIONS
-        return string.ascii_uppercase[encoded_char_idx]
+            encoded_char_idx = (
+                character_idx + self._current_pos
+            ) % self.__max_positions
+        return self.__valid_characters.value[encoded_char_idx]
 
     @property
     def current_position(self) -> int:
         """int: The current position of the rotor"""
-        return self.__current_pos
+        return self._current_pos
+
+    @property
+    def contains_digits(self) -> bool:
+        """bool: Whether if the Rotor contains digits as valid characters to cipher"""
+        return self.__valid_characters is Characters.ALPHANUMERIC
