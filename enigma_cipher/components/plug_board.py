@@ -4,8 +4,7 @@ This module contains the PlugBoard dataclass
 from __future__ import annotations
 
 import random
-import string
-from typing import Final, Mapping, Optional, Set
+from typing import Mapping, Optional
 
 from enigma_cipher.components.characters import Characters
 
@@ -23,8 +22,6 @@ class PlugBoard:
     letter 'T' will block this combination, not allowing mapping the letter 'T' with
     any other letter.
     """
-
-    VALID_CHARACTERS: Final[Set[str]] = set(string.ascii_uppercase)
 
     def __init__(
         self,
@@ -91,17 +88,32 @@ class PlugBoard:
             self.__keys_map = final_mapping
 
     @classmethod
-    def random_map(cls) -> PlugBoard:
+    def random_map(cls, include_digits: bool = False) -> PlugBoard:
         """
         Initializes the PlugBoard class with a random mapping. The mapping might
         contain all letters connected or only a few.
+
+        Parameters
+        ----------
+        include_digits: bool, default = False
+            If True, the PlugBoard will include the digits to be ciphered. As default,
+            only letters are to be ciphered.
         """
+        valid_characters = (
+            list(Characters.ALPHANUMERIC.value)
+            if include_digits
+            else list(Characters.ALPHABETIC.value)
+        )
+        nof_characters = len(valid_characters)
+
         keys_map = {}
-        shuffled_keys = iter(random.sample(list(cls.VALID_CHARACTERS), 26))
-        for key, _ in zip(shuffled_keys, range(random.randint(0, 13))):
+        shuffled_keys = iter(random.sample(valid_characters, nof_characters))
+        for key, _ in zip(
+            shuffled_keys, range(random.randint(0, int(nof_characters / 2)))
+        ):
             keys_map[key] = next(shuffled_keys)
 
-        return cls(plugged_keys=keys_map)
+        return cls(plugged_keys=keys_map, include_digits=include_digits)
 
     def cipher_character(self, character: str) -> str:
         """
