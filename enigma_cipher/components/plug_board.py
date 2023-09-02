@@ -7,6 +7,8 @@ import random
 import string
 from typing import Final, Mapping, Optional, Set
 
+from enigma_cipher.components.characters import Characters
+
 
 class PlugBoardError(ValueError):
     """
@@ -24,7 +26,11 @@ class PlugBoard:
 
     VALID_CHARACTERS: Final[Set[str]] = set(string.ascii_uppercase)
 
-    def __init__(self, plugged_keys: Optional[Mapping[str, str]] = None):
+    def __init__(
+        self,
+        plugged_keys: Optional[Mapping[str, str]] = None,
+        include_digits: bool = False,
+    ):
         """
         Initializes the class from a given mapping.
 
@@ -37,6 +43,9 @@ class PlugBoard:
             the specification of {"A": "B", ...} is enough for the class to understand
             the connection is bidirectional.
             It is not needed to give all characters, only those that are mapped.
+        include_digits: bool, default = False
+            If True, the PlugBoard will include the digits to be ciphered. As default,
+            only letters are to be ciphered.
 
         Raises
         ------
@@ -44,21 +53,25 @@ class PlugBoard:
             If a letter is being mapped to different values or to a non-character and
             non-ascii value.
         """
+        self.__valid_characters = (
+            Characters.ALPHANUMERIC if include_digits else Characters.ALPHABETIC
+        )
+
         if plugged_keys is None:
-            self.__keys_map = {key: key for key in self.VALID_CHARACTERS}
+            self.__keys_map = {key: key for key in self.__valid_characters.value}
         else:
-            final_mapping = {key: "" for key in self.VALID_CHARACTERS}
-            unused_keys = list(self.VALID_CHARACTERS)
+            final_mapping = {key: "" for key in self.__valid_characters.value}
+            unused_keys = list(self.__valid_characters.value)
 
             for key, value in plugged_keys.items():
                 key, value = key.upper(), value.upper()
                 if (
-                    key not in self.VALID_CHARACTERS
-                    or value not in self.VALID_CHARACTERS
+                    key not in self.__valid_characters
+                    or value not in self.__valid_characters
                 ):
                     raise PlugBoardError(
-                        f"Invalid mapping given. Only characters "
-                        f"'{self.VALID_CHARACTERS}' are allowed"
+                        "Invalid mapping given. Only the following characters "
+                        f"are allowed:\n'{self.__valid_characters}'"
                     )
                 if final_mapping[key] == value:
                     continue
@@ -100,3 +113,8 @@ class PlugBoard:
     def plugged_keys(self) -> Mapping[str, str]:
         """Mapping: Configured keys mapping for all valid characters"""
         return self.__keys_map
+
+    @property
+    def contains_digits(self) -> bool:
+        """bool: Whether if the component contains digits within its valid characters"""
+        return self.__valid_characters is Characters.ALPHANUMERIC
