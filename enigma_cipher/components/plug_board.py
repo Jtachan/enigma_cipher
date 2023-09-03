@@ -89,7 +89,7 @@ class PlugBoard:
     def random_map(cls, include_digits: bool = False) -> PlugBoard:
         """
         Initializes the PlugBoard class with a random mapping. The mapping might
-        contain all letters connected or only a few.
+        contain all characters connected or only a few.
 
         Parameters
         ----------

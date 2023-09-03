@@ -12,7 +12,7 @@ from enigma_cipher import EnigmaMachine
 
 ## `EnigmaMachine(plugboard, rotors, reflector, reset_after_ciphering=True)`
 
-Constructor of the `EnigmaMachine` cipher.
+Constructor of the `EnigmaMachine` cipher. All specified components (plugboard, rotors and reflector) but have defined the same `include_digits` choice.
 
 _Parameters_
 
@@ -45,14 +45,15 @@ _Parameters_
 
 ## Class methods
 
-### `EnigmaMachine.random_configuration(nof_rotors=None, reset_after_ciphering=True)`
+### `EnigmaMachine.random_configuration(nof_rotors=None, reset_after_ciphering=True, include_digits=False)`
 
 Initializes the machine and all its components with a random configuration.
 
 _Parameters_
 
-- **nof_rotors** `int` (optional):<br/>Number of rotors that compose the machine. If not specified, a randon number of them between 2 and 10 will be configured.
-- **reset_after_ciphering** `bool` (default = True):<br/>Flag that controls if the machine should reset to the initial configuration after ciphering a text.
+- **nof_rotors** `int`, optional:<br/>Number of rotors that compose the machine. If not specified, a randon number of them between 2 and 10 will be configured.
+- **reset_after_ciphering** `bool`, default = True:<br/>Flag that controls if the machine should reset to the initial configuration after ciphering a text.
+- **include_digits** `bool`, default = False:<br/>If True, the EnigmaMachine will include the digits to be ciphered. As default, only letters are to be ciphered.
 
 _Returns_
 
@@ -73,7 +74,7 @@ _Returns_
 
 ### `EnigmaMachine.from_configuration_file(input_path, reset_after_ciphering=True)`
 
-Initializes the machine from a .json configuration file.
+Initializes the machine from a .json configuration file. Configuration files from previous released versions are supported.
 
 _Parameters_
 
@@ -90,4 +91,4 @@ _Returns_
 
 _Returns_
 
-- `dict`:<br/>Initial configuration as a dictionary with the keys 'plugboard', 'rotors' and 'reflector'.
+- `dict`:<br/>Initial configuration as a dictionary with the keys 'plugboard', 'rotors', 'reflector' and 'alphanumeric'.

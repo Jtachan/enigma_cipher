@@ -302,5 +302,6 @@ class EnigmaMachine:
             - 'plugboard': Contains the plugged keys.
             - 'rotors': Iteration of all rotor's initial positions.
             - 'reflector': Contains the reflector map.
+            - 'alphanumeric': Boolean defining if the machine considers ciphering digits
         """
         return self.__init_config
