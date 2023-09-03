@@ -50,25 +50,26 @@ class PlugBoard:
             If a letter is being mapped to different values or to a non-character and
             non-ascii value.
         """
-        self.__valid_characters = (
+        self.__characters_type = (
             Characters.ALPHANUMERIC if include_digits else Characters.ALPHABETIC
         )
+        valid_characters_set = self.__characters_type.value
 
         if plugged_keys is None:
-            self._keys_map = {key: key for key in self.__valid_characters.value}
+            self._keys_map = {key: key for key in valid_characters_set}
         else:
-            final_mapping = {key: "" for key in self.__valid_characters.value}
-            unused_keys = list(self.__valid_characters.value)
+            final_mapping = {key: "" for key in valid_characters_set}
+            unused_keys = valid_characters_set.copy()
 
             for key, value in plugged_keys.items():
                 key, value = key.upper(), value.upper()
                 if (
-                    key not in self.__valid_characters
-                    or value not in self.__valid_characters
+                    key not in valid_characters_set
+                    or value not in valid_characters_set
                 ):
                     raise PlugBoardError(
                         "Invalid mapping given. Only the following characters "
-                        f"are allowed:\n'{self.__valid_characters}'"
+                        f"are allowed:\n'{valid_characters_set}'"
                     )
                 if final_mapping[key] == value:
                     continue
@@ -129,4 +130,4 @@ class PlugBoard:
     @property
     def contains_digits(self) -> bool:
         """bool: Whether if the component contains digits within its valid characters"""
-        return self.__valid_characters is Characters.ALPHANUMERIC
+        return self.__characters_type is Characters.ALPHANUMERIC
