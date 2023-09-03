@@ -122,7 +122,7 @@ class PlugBoard:
     @property
     def plugged_keys(self) -> Mapping[str, str]:
         """Mapping: Configured keys mapping for all valid characters"""
-        return {key: val for key, val in sorted(self._keys_map.items())}
+        return dict(sorted(self._keys_map.items()))
 
     @property
     def contains_digits(self) -> bool:
