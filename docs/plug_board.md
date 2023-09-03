@@ -9,7 +9,7 @@ The `PlugBoard` class can be imported directly from the `enigma_cipher` package:
 from enigma_cipher import PlugBoard
 ```
 
-## `PlugBoard(plugged_keys=None)`
+## `PlugBoard(plugged_keys=None, include_digits=False)`
 
 Initializes the `PlugBoard` from the given mapping of keys.
 It only takes alphabetic characters.
@@ -17,6 +17,7 @@ It only takes alphabetic characters.
 _Parameters_
 
 - **plugged_keys** `Mapping[str, str]`, optional:<br/> Mapping for every single letter in pairs. It is not necessary to specify both directions as {"A": "B", "B": "A"}; the specification of {"A": "B", ...} is enough for the class to understand the connection is bidirectional. Any not specified letter is assumed as one without any connection to another letter. If not specified, all letters are plugged to themselves.
+- **include_digits** `bool`, default = False:<br/>If True, the PlugBoard will include the digits to be ciphered. As default, only letters are to be ciphered.
 
 ## `PlugBoard.cipher_character(character)`
 
@@ -30,12 +31,18 @@ _Returns_
 
 ## Class methods
 
-### `PlugBoard.random_map()`
+### `PlugBoard.random_map(include_digits=False)`
+
+Initializes the PlugBoard class with a random mapping. 
+The mapping might contain all characters connected or only a few.
+
+_Parameters_
+
+**include_digits**: `bool`, default = False:<br/> If True, the PlugBoard will include the digits to be ciphered. As default, only letters are to be ciphered.
 
 _Returns_
 
-- `PlugBoard`:<br/>Initializes the PlugBoard class with a random mapping among the letters.
-The mapping can hold from no mapping among letters to having all letters mapped.
+- `PlugBoard`:<br/>Initializes the PlugBoard class with a random mapping among the characters.
 
 ## Properties
 
@@ -44,3 +51,9 @@ The mapping can hold from no mapping among letters to having all letters mapped.
 _Returns_
 
 - `Mapping[str, str]`:<br/>Configured keys mapping for all valid characters.
+
+### `PlugBoard.contains_digits`
+
+_Returns_
+
+- `bool`:<br/>Whether if the component contains digits within its valid characters

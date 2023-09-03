@@ -3,6 +3,7 @@ This module contains the EnigmaMachine class
 """
 from __future__ import annotations
 
+import itertools
 import json
 import os
 import random
@@ -15,8 +16,11 @@ from enigma_cipher.components.rotor import Rotor
 
 class EnigmaMachine:
     """
-    This class allows encoding and decoding text messages. Only alphabetic characters
-    are encoded, other characters are returned as they are.
+    This class allows encoding and decoding text messages. Only alphabetic or
+    alphanumeric characters are encoded, depending on the configuration of its
+    components. Other characters are returned as they are.
+    All components defining the EnigmaMachine must share the configuration for using
+    only alphabetic characters or using alphanumeric characters.
     """
 
     def __init__(
@@ -52,11 +56,20 @@ class EnigmaMachine:
             "plugboard": plugboard.plugged_keys,
             "rotors": [rotor.current_position for rotor in rotors],
             "reflector": reflector_config,
+            "alphanumeric": reflector.contains_digits,
         }
 
-        self.__plugboard = plugboard
-        self.__rotors = rotors
-        self.__reflector = reflector
+        for component in itertools.chain(rotors, [plugboard]):
+            if reflector.contains_digits != component.contains_digits:
+                raise ValueError(
+                    "All components must share the same valid characters: either "
+                    "alphabetic or alphanumeric."
+                )
+
+        self._plugboard = plugboard
+        self._rotors = rotors
+        self._reflector = reflector
+
         self.__reset = reset_after_ciphering
 
     @classmethod
@@ -75,16 +88,26 @@ class EnigmaMachine:
             If True, the machine instance will reset to the initialized configuration
             after ciphering a test.
         """
+        if "alphanumeric" in configuration:
+            include_digits = configuration["alphanumeric"]
+        else:
+            include_digits = False
+
         if isinstance(reflector_config := configuration["reflector"], dict):
             reflector = Reflector(mode="custom", custom_map=reflector_config)
         elif reflector_config in ("random", "historical"):
-            reflector = Reflector(mode=reflector_config)
+            reflector = Reflector(mode=reflector_config, include_digits=include_digits)
         else:
             raise ValueError("Unknown configuration for reflector")
 
         return cls(
-            plugboard=PlugBoard(configuration["plugboard"]),
-            rotors=[Rotor(pos) for pos in configuration["rotors"]],
+            plugboard=PlugBoard(
+                plugged_keys=configuration["plugboard"], include_digits=include_digits
+            ),
+            rotors=[
+                Rotor(position=pos, include_digits=include_digits)
+                for pos in configuration["rotors"]
+            ],
             reflector=reflector,
             reset_after_ciphering=reset_after_ciphering,
         )
@@ -121,6 +144,7 @@ class EnigmaMachine:
         cls,
         nof_rotors: Optional[int] = None,
         reset_after_ciphering: bool = True,
+        include_digits: bool = False,
     ) -> EnigmaMachine:
         """
         Initializes the EnigmaMachine from a totally random configuration.
@@ -133,14 +157,20 @@ class EnigmaMachine:
         reset_after_ciphering: bool, default = True.
             If True, the machine instance will reset to the initialized configuration
             after ciphering a test.
+        include_digits: bool, default = False
+            If True, the EnigmaMachine will include the digits to be ciphered.
+            As default, only letters are to be ciphered.
         """
         if nof_rotors is None:
             nof_rotors = random.randint(2, 10)
 
         return cls(
-            plugboard=PlugBoard.random_map(),
-            rotors=[Rotor(random.randint(0, 26)) for _ in range(nof_rotors)],
-            reflector=Reflector(mode="random"),
+            plugboard=PlugBoard.random_map(include_digits=include_digits),
+            rotors=[
+                Rotor(position=random.randint(0, 26), include_digits=include_digits)
+                for _ in range(nof_rotors)
+            ],
+            reflector=Reflector(mode="random", include_digits=include_digits),
             reset_after_ciphering=reset_after_ciphering,
         )
 
@@ -185,7 +215,11 @@ class EnigmaMachine:
         """
         final_text = ""
         for character in text.upper():
-            if character.isalpha():
+            if (
+                character.isalpha()
+                or character.isnumeric()
+                and self._reflector.contains_digits
+            ):
                 character = self._compute_forward(character)
                 character = self._compute_backwards(character)
                 self.__step_up_rotors()
@@ -194,7 +228,11 @@ class EnigmaMachine:
 
         # Reset the machine: only the rotors have changed from the original config.
         if self.__reset:
-            self.__rotors = [Rotor(pos) for pos in self.__init_config["rotors"]]
+            include_digits = self.__init_config["alphanumeric"]
+            self._rotors = [
+                Rotor(position=pos, include_digits=include_digits)
+                for pos in self.__init_config["rotors"]
+            ]
 
         return final_text
 
@@ -213,10 +251,10 @@ class EnigmaMachine:
         character: str
             Ciphered character.
         """
-        character = self.__plugboard.cipher_character(character)
-        for rotor in self.__rotors:
+        character = self._plugboard.cipher_character(character)
+        for rotor in self._rotors:
             character = rotor.cipher_character(character, is_forward_path=True)
-        character = self.__reflector.reflect_character(character)
+        character = self._reflector.reflect_character(character)
 
         return character
 
@@ -236,9 +274,9 @@ class EnigmaMachine:
         character: str
             Ciphered character.
         """
-        for rotor in self.__rotors[::-1]:
+        for rotor in self._rotors[::-1]:
             character = rotor.cipher_character(character, is_forward_path=False)
-        character = self.__plugboard.cipher_character(character)
+        character = self._plugboard.cipher_character(character)
         return character
 
     def __step_up_rotors(self):
@@ -250,9 +288,10 @@ class EnigmaMachine:
             - Any update refers always to a single-step up in the rotor's position.
         """
         update_next_rotor = True
-        for rotor in self.__rotors:
+        last_rotor_pos = 35 if self._reflector.contains_digits else 25
+        for rotor in self._rotors:
             update_rotor = update_next_rotor
-            update_next_rotor = rotor.current_position == Rotor.MAX_POSITIONS - 1
+            update_next_rotor = rotor.current_position == last_rotor_pos
             if update_rotor:
                 rotor.update_position()
 
@@ -263,5 +302,6 @@ class EnigmaMachine:
             - 'plugboard': Contains the plugged keys.
             - 'rotors': Iteration of all rotor's initial positions.
             - 'reflector': Contains the reflector map.
+            - 'alphanumeric': Boolean defining if the machine considers ciphering digits
         """
         return self.__init_config

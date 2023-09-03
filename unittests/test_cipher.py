@@ -53,6 +53,20 @@ def test_message_reflection(nof_rotors: int):
     assert text == cipher.cipher_text(encoded_text).capitalize()
 
 
+def test_digits_ciphering():
+    """
+    Testing the correct number ciphering. This implies two statements:
+        1. A ciphered number will be a different alphanumeric character.
+        2. The decoded text must still be retrieved.
+    """
+    cipher = EnigmaMachine.random_configuration(include_digits=True)
+    text = "1 kg is 1000 g and 1 lb is 16 oz."
+    encoded_text = cipher.cipher_text(text)
+
+    assert encoded_text[0] != "1", "Digits not correctly encoded"
+    assert text.upper() == cipher.cipher_text(encoded_text)
+
+
 def test_init_from_file():
     """
     Checking correct initialization from a configuration file. If initialized
