@@ -228,7 +228,11 @@ class EnigmaMachine:
 
         # Reset the machine: only the rotors have changed from the original config.
         if self.__reset:
-            self._rotors = [Rotor(pos) for pos in self.__init_config["rotors"]]
+            include_digits = self.__init_config["alphanumeric"]
+            self._rotors = [
+                Rotor(position=pos, include_digits=include_digits)
+                for pos in self.__init_config["rotors"]
+            ]
 
         return final_text
 

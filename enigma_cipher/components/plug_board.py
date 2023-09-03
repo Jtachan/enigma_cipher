@@ -53,7 +53,7 @@ class PlugBoard:
         self.__characters_type = (
             Characters.ALPHANUMERIC if include_digits else Characters.ALPHABETIC
         )
-        valid_characters_set = self.__characters_type.value
+        valid_characters_set = set(self.__characters_type.value)
 
         if plugged_keys is None:
             self._keys_map = {key: key for key in valid_characters_set}

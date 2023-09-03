@@ -42,7 +42,7 @@ class Rotor:
         characters_type = (
             Characters.ALPHANUMERIC if include_digits else Characters.ALPHABETIC
         )
-        self.__valid_characters = sorted(list(characters_type.value))
+        self.__valid_characters = characters_type.value.copy()
         self.__max_positions = len(self.__valid_characters)
 
         self._current_pos = position % self.__max_positions
@@ -59,10 +59,10 @@ class Rotor:
             affects the number of os positions the rotor can have. As default, only
             letters are to be ciphered.
         """
-        nof_characters = (
-            len(Characters.ALPHANUMERIC.value)
+        nof_characters = len(
+            Characters.ALPHANUMERIC.value
             if include_digits
-            else len(Characters.ALPHABETIC.value)
+            else Characters.ALPHABETIC.value
         )
         return cls(
             position=random.randint(0, nof_characters), include_digits=include_digits

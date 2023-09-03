@@ -11,5 +11,5 @@ class Characters(enum.Enum):
     Enumeration containing the possible characters to encode within the cipher.
     """
 
-    ALPHABETIC = set(string.ascii_uppercase)
-    ALPHANUMERIC = set(string.ascii_uppercase + string.digits)
+    ALPHABETIC = list(string.ascii_uppercase)
+    ALPHANUMERIC = list(string.ascii_uppercase + string.digits)
