@@ -63,10 +63,7 @@ class PlugBoard:
 
             for key, value in plugged_keys.items():
                 key, value = key.upper(), value.upper()
-                if (
-                    key not in valid_characters_set
-                    or value not in valid_characters_set
-                ):
+                if key not in valid_characters_set or value not in valid_characters_set:
                     raise PlugBoardError(
                         "Invalid mapping given. Only the following characters "
                         f"are allowed:\n'{valid_characters_set}'"
