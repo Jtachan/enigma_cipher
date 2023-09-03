@@ -21,6 +21,7 @@ Here is explained the behavior of the different components that create an enigma
 
 The **plugboard** (or _Steckerbett_ in German) allows wiring letters in pairs by a manual configuration from the operator.
 In other words, the operator could choose two configurations for each letter:
+
 - Not wired. In this case, if this letter was pressed (for example, the letter "A"), the signal sent to the next component would correspond still to the letter "A".
 - Wired to another letter. For this, if "A" was wired to "T" means that if "A" is pressed, the signal "T" is given to the next component. Consequentially, when "T" was pressed, the signal "A" was communicated.
 
@@ -52,6 +53,7 @@ The **reflector** is the component that allows an encoded message to be decoded 
 This component has a static connection of letters by pairs, just like the plugboard, where all letters are connected.
 
 The main differences of this component are:
+
 - The connexions among the letters won't change through the ciphering of the text.
 - The connexions cannot be changed manually.
 
@@ -65,3 +67,11 @@ In other words, "A" is directly connected to "G".
 Therefore, when "G" is pressed, the letter "A" is to be the outcome.
 
 This behavior is the one that the machine experiences to cipher a text, as the rotors will update their state when the finger is lifted from the key.
+
+## Package differences
+
+The installable package `enigma-cipher` bases its whole logic into mimicking how the original enigma machine worked.
+However, the package allows using that logic with a few differences (if desired):
+
+- **Number of rotors**: While the original enigma machine worked with three rotors. `enigma-cipher` allows setting up a machine with any number of rotors.
+- **Using digits**: The original machine could encode only letters. While that behaviour is still available in the package, it is possible to set the element to also cipher digits.

@@ -4,8 +4,9 @@ This module contains the PlugBoard dataclass
 from __future__ import annotations
 
 import random
-import string
-from typing import Final, Mapping, Optional, Set
+from typing import Mapping, Optional
+
+from enigma_cipher.components.characters import Characters
 
 
 class PlugBoardError(ValueError):
@@ -22,9 +23,11 @@ class PlugBoard:
     any other letter.
     """
 
-    VALID_CHARACTERS: Final[Set[str]] = set(string.ascii_uppercase)
-
-    def __init__(self, plugged_keys: Optional[Mapping[str, str]] = None):
+    def __init__(
+        self,
+        plugged_keys: Optional[Mapping[str, str]] = None,
+        include_digits: bool = False,
+    ):
         """
         Initializes the class from a given mapping.
 
@@ -37,6 +40,9 @@ class PlugBoard:
             the specification of {"A": "B", ...} is enough for the class to understand
             the connection is bidirectional.
             It is not needed to give all characters, only those that are mapped.
+        include_digits: bool, default = False
+            If True, the PlugBoard will include the digits to be ciphered. As default,
+            only letters are to be ciphered.
 
         Raises
         ------
@@ -44,21 +50,23 @@ class PlugBoard:
             If a letter is being mapped to different values or to a non-character and
             non-ascii value.
         """
+        self.__characters_type = (
+            Characters.ALPHANUMERIC if include_digits else Characters.ALPHABETIC
+        )
+        valid_characters_set = set(self.__characters_type.value)
+
         if plugged_keys is None:
-            self.__keys_map = {key: key for key in self.VALID_CHARACTERS}
+            self._keys_map = {key: key for key in valid_characters_set}
         else:
-            final_mapping = {key: "" for key in self.VALID_CHARACTERS}
-            unused_keys = list(self.VALID_CHARACTERS)
+            final_mapping = {key: "" for key in valid_characters_set}
+            unused_keys = valid_characters_set.copy()
 
             for key, value in plugged_keys.items():
                 key, value = key.upper(), value.upper()
-                if (
-                    key not in self.VALID_CHARACTERS
-                    or value not in self.VALID_CHARACTERS
-                ):
+                if key not in valid_characters_set or value not in valid_characters_set:
                     raise PlugBoardError(
-                        f"Invalid mapping given. Only characters "
-                        f"'{self.VALID_CHARACTERS}' are allowed"
+                        "Invalid mapping given. Only the following characters "
+                        f"are allowed:\n'{valid_characters_set}'"
                     )
                 if final_mapping[key] == value:
                     continue
@@ -75,28 +83,48 @@ class PlugBoard:
             for key in unused_keys:
                 final_mapping[key] = key
 
-            self.__keys_map = final_mapping
+            self._keys_map = final_mapping
 
     @classmethod
-    def random_map(cls) -> PlugBoard:
+    def random_map(cls, include_digits: bool = False) -> PlugBoard:
         """
         Initializes the PlugBoard class with a random mapping. The mapping might
-        contain all letters connected or only a few.
+        contain all characters connected or only a few.
+
+        Parameters
+        ----------
+        include_digits: bool, default = False
+            If True, the PlugBoard will include the digits to be ciphered. As default,
+            only letters are to be ciphered.
         """
+        valid_characters = (
+            list(Characters.ALPHANUMERIC.value)
+            if include_digits
+            else list(Characters.ALPHABETIC.value)
+        )
+        nof_characters = len(valid_characters)
+
         keys_map = {}
-        shuffled_keys = iter(random.sample(list(cls.VALID_CHARACTERS), 26))
-        for key, _ in zip(shuffled_keys, range(random.randint(0, 13))):
+        shuffled_keys = iter(random.sample(valid_characters, nof_characters))
+        for key, _ in zip(
+            shuffled_keys, range(random.randint(0, int(nof_characters / 2)))
+        ):
             keys_map[key] = next(shuffled_keys)
 
-        return cls(plugged_keys=keys_map)
+        return cls(plugged_keys=keys_map, include_digits=include_digits)
 
     def cipher_character(self, character: str) -> str:
         """
         Returns the mapped character on the plugboard
         """
-        return self.__keys_map[character]
+        return self._keys_map[character]
 
     @property
     def plugged_keys(self) -> Mapping[str, str]:
         """Mapping: Configured keys mapping for all valid characters"""
-        return self.__keys_map
+        return dict(sorted(self._keys_map.items()))
+
+    @property
+    def contains_digits(self) -> bool:
+        """bool: Whether if the component contains digits within its valid characters"""
+        return self.__characters_type is Characters.ALPHANUMERIC
