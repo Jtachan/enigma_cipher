@@ -12,7 +12,7 @@ if __name__ == "__main__":
         name="enigma-cipher",
         author="Jaime Gonzalez Gomez",
         author_email="jim.gomez.dnn@gmail.com",
-        version="1.0.0",
+        version="1.1.0",
         python_requires=">=3.8",
         description="Package providing encoder and decoder instances to use the "
         "enigma machine cipher",
