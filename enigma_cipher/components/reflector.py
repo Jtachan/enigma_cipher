@@ -138,7 +138,7 @@ class Reflector:
     @property
     def reflections_map(self) -> dict:
         """dict: Map that composes the reflector"""
-        return self._reflections
+        return {key: val for key, val in sorted(self._reflections.items())}
 
     @property
     def is_historical(self) -> bool:
