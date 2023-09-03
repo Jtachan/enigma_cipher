@@ -39,11 +39,10 @@ class Rotor:
             affects the number of os positions the rotor can have. As default, only
             letters are to be ciphered.
         """
-        self.__valid_characters = (
-            list(Characters.ALPHANUMERIC.value)
-            if include_digits
-            else list(Characters.ALPHABETIC.value)
+        characters_type = (
+            Characters.ALPHANUMERIC if include_digits else Characters.ALPHABETIC
         )
+        self.__valid_characters = sorted(list(characters_type.value))
         self.__max_positions = len(self.__valid_characters)
 
         self._current_pos = position % self.__max_positions
